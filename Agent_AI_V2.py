@@ -79,18 +79,22 @@ Context from documents:
 Answer:""",
     input_variables=["question", "context"]
     )
-    
-    # Create chain with custom prompt
-    stuff_chain = load_qa_with_sources_chain(
+
+    # Build the LLM chain
+    llm_chain = LLMChain(
         llm=ChatOpenAI(model="gpt-4o-mini", temperature=0),
-        chain_type="stuff",
         prompt=custom_prompt
     )
+    # StuffDocumentsChain wraps the LLM chain
+    stuff_chain = StuffDocumentsChain(
+        llm_chain=llm_chain,
+        document_variable_name="context"
+    )
     
-    # Create QA chain
+    # RetrievalQA wraps the StuffDocumentsChain with retriever
     qa_chain = RetrievalQA(
-        retriever=retriever,
         combine_documents_chain=stuff_chain,
+        retriever=retriever,
         return_source_documents=True
     )
 
