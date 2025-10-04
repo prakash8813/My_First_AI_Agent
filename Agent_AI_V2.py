@@ -62,6 +62,21 @@ def load_agent(folder_path="./Policies", persist_dir="policy_db"):
 
     # Create retriever
     retriever = vectorstore.as_retriever(search_kwargs={"k": 8})
+    
+    # Custom prompt template with polite fallback
+    custom_prompt = PromptTemplate(
+        template="""
+You are a helpful assistant that answers questions strictly based on company policy documents provided.
+If the answer is not in the documents, respond politely with:
+
+"I'm sorry, I could not find a relevant answer in the company policies. Please contact HR for clarification."
+
+Question: {query}
+Context from documents:
+{context}
+Answer:""",
+        input_variables=["query", "context"]
+    )
 
     # Create QA chain
     qa_chain = RetrievalQA.from_chain_type(
@@ -69,6 +84,7 @@ def load_agent(folder_path="./Policies", persist_dir="policy_db"):
         chain_type="stuff",
         retriever=retriever,
         return_source_documents=True
+        chain_type_kwargs={"prompt": custom_prompt}
     )
 
     return qa_chain
