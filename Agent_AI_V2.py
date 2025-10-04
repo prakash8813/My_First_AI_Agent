@@ -9,6 +9,8 @@ from langchain.chains import RetrievalQA
 from dotenv import load_dotenv
 from langchain.prompts import PromptTemplate
 from langchain.chains.qa_with_sources.loading import load_qa_with_sources_chain
+from langchain.chains import LLMChain, RetrievalQA
+from langchain.chains.qa_with_sources.base import StuffDocumentsChain
 
 # -------------------------------
 # 1️⃣ Load environment variables
