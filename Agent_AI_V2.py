@@ -50,7 +50,7 @@ def load_agent(folder_path="./Policies", persist_dir="policy_db"):
         return None
 
     # Split into chunks
-    splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=150)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
     chunks = splitter.split_documents(docs)
 
     # Create embeddings
@@ -61,7 +61,7 @@ def load_agent(folder_path="./Policies", persist_dir="policy_db"):
     vectorstore.persist()
 
     # Create retriever
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
+    retriever = vectorstore.as_retriever(search_kwargs={"k": 8})
 
     # Create QA chain
     qa_chain = RetrievalQA.from_chain_type(
