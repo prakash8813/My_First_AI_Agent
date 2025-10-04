@@ -8,6 +8,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 from dotenv import load_dotenv
 from langchain.prompts import PromptTemplate
+from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 
 # -------------------------------
 # 1️⃣ Load environment variables
@@ -42,7 +43,7 @@ def load_agent(folder_path="./Policies", persist_dir="policy_db"):
 
     docs = []
     for file in os.listdir(folder_path):
-        if file.endswith(".docx"):
+        if file.endswith(".docx") and not file.startswith("~$"):
             loader = Docx2txtLoader(os.path.join(folder_path, file))
             docs.extend(loader.load())
 
@@ -72,20 +73,25 @@ If the answer is not in the documents, respond politely with:
 
 "I'm sorry, I could not find a relevant answer in the company policies. Please contact HR for clarification."
 
-Question: {query}
+Question: {question}
 Context from documents:
 {context}
 Answer:""",
-        input_variables=["query", "context"]
+        input_variables=["question", "context"]
     )
-
-    # Create QA chain
-    qa_chain = RetrievalQA.from_chain_type(
+    
+    # Create chain with custom prompt
+    stuff_chain = load_qa_with_sources_chain(
         llm=ChatOpenAI(model="gpt-4o-mini", temperature=0),
         chain_type="stuff",
+        prompt=custom_prompt
+    )
+    
+    # Create QA chain
+    qa_chain = RetrievalQA(
         retriever=retriever,
-        return_source_documents=True,
-        chain_type_kwargs={"prompt": custom_prompt}
+        combine_documents_chain=stuff_chain,
+        return_source_documents=True
     )
 
     return qa_chain
