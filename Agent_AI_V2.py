@@ -7,6 +7,7 @@ from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 from dotenv import load_dotenv
+from langchain.prompts import PromptTemplate
 
 # -------------------------------
 # 1️⃣ Load environment variables
