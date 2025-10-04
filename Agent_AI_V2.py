@@ -83,7 +83,7 @@ Answer:""",
         llm=ChatOpenAI(model="gpt-4o-mini", temperature=0),
         chain_type="stuff",
         retriever=retriever,
-        return_source_documents=True
+        return_source_documents=True,
         chain_type_kwargs={"prompt": custom_prompt}
     )
 
