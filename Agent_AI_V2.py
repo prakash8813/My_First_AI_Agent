@@ -66,7 +66,8 @@ def load_agent(folder_path="./Policies", persist_dir="policy_db"):
     retriever = vectorstore.as_retriever(search_kwargs={"k": 8})
     
     # Custom prompt template with polite fallback
-    custom_prompt = """
+    custom_prompt =PromptTemplate(
+        template="""
 You are a helpful assistant that answers questions strictly based on company policy documents provided.
 If the answer is not in the documents, respond politely with:
 
@@ -75,7 +76,9 @@ If the answer is not in the documents, respond politely with:
 Question: {question}
 Context from documents:
 {context}
-Answer:"""
+Answer:""",
+    input_variables=["question", "context"]
+    )
     
     # Create chain with custom prompt
     stuff_chain = load_qa_with_sources_chain(
