@@ -8,7 +8,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 from dotenv import load_dotenv
 from langchain.prompts import PromptTemplate
-from langchain.chains.qa_with_sources import load_qa_with_sources_chain
+from langchain.chains.qa_with_sources.loading import load_qa_with_sources_chain
 
 # -------------------------------
 # 1️⃣ Load environment variables
