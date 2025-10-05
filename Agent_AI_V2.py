@@ -31,8 +31,8 @@ os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 # 2️⃣ Streamlit page setup
 # -------------------------------
 st.set_page_config(page_title="📄 Policy Chat Agent", page_icon="📚", layout="wide")
-st.title("📄 Company Policy Chat Agent")
-st.markdown("Ask questions about XYZ company policies(HR, Conduct, Benefits, Leave) and get AI-based answers with sources!")
+st.title("📄 XYZ Company Policy Chat Agent")
+st.markdown("Ask questions about XYZ company policies which are AI generated (HR, Conduct, Benefits, Leave) and get AI-based answers with sources!")
 
 # -------------------------------
 # 3️⃣ Load and cache the agent
